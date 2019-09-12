@@ -8,6 +8,8 @@
 /* System */
 global.Discord        = require('discord.js');
 global.bot            = new Discord.Client();
+require('http').createServer().listen(3000); 
+
 
 /* Dependencies */
 global.fs             = require('fs');
@@ -83,9 +85,8 @@ bot.on('message', handleMessage);
  */
 function handleLogin() {
 	console.log('Discord Time Bot is now online!');
-	bot.user.setActivity("Unity Scrims | Beta", {type: "WATCHING"}); 
-	bot.user.setStatus("dnd"); 
-	
+	bot.user.setActivity("Unity Scrims", {type: "WATCHING"});
+	bot.user.setStatus("dnd")
 	/**
 	 * @desc Time function that updates the bot's nickname in every server
 	 * @function
@@ -119,7 +120,11 @@ function handleLogin() {
 	setTime();
 	scheduledJob = schedule.scheduleJob('0 * * * * *', setTime);
 }
-
+function handleDisconnect() {
+	if (scheduledJob) {
+		scheduledJob.cancel();
+	}
+}
 
 /**
  * @desc Attempt to log into Discord's servers. Handle as many errors as we can instead of crashing.
@@ -128,7 +133,12 @@ function handleLogin() {
 bot.login(process.env.BOT_TOKEN);
 bot.on('ready', handleLogin);
 bot.on('resume', handleLogin);
-
+bot.on('reconnecting', handleDisconnect);
+bot.on('error', handleDisconnect);
+bot.on('disconnect', function (event) {
+	console.warn("Disconnected as Discord's servers are unreachable.");
+	handleDisconnect();
+});
 // TODO (node:23452) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 11): Error: getaddrinfo ENOENT discordapp.com:443
 
 // TODO (node:13582) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 4156): TypeError: Cannot read property 'options' of undefined
