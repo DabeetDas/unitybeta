@@ -118,7 +118,7 @@ function handleLogin() {
 		});
 	}
 	setTime();
-	scheduledJob = schedule.scheduleJob('0 * * * * *', setTime);
+	function scheduledJob = schedule.scheduleJob('0 * * * * *', setTime);
 }
 function handleDisconnect() {
 	if (scheduledJob) {
