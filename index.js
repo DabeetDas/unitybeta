@@ -128,12 +128,7 @@ function handleLogin() {
 bot.login(process.env.BOT_TOKEN);
 bot.on('ready', handleLogin);
 bot.on('resume', handleLogin);
-bot.on('reconnecting', handleDisconnect);
-bot.on('error', handleDisconnect);
-bot.on('disconnect', function (event) {
-	console.warn("Disconnected as Discord's servers are unreachable.");
-	handleDisconnect();
-});
+
 // TODO (node:23452) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 11): Error: getaddrinfo ENOENT discordapp.com:443
 
 // TODO (node:13582) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 4156): TypeError: Cannot read property 'options' of undefined
