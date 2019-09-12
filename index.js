@@ -119,11 +119,7 @@ function handleLogin() {
 	setTime();
 	scheduledJob = schedule.scheduleJob('0 * * * * *', setTime);
 }
-function handleDisconnect() {
-	if (scheduledJob) {
-		scheduledJob.cancel();
-	}
-}
+
 
 /**
  * @desc Attempt to log into Discord's servers. Handle as many errors as we can instead of crashing.
